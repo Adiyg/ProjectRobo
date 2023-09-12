@@ -1,0 +1,103 @@
+import json
+
+
+from aiohttp import web
+
+
+app = web.Application()
+
+
+async def get_handler(request):
+
+
+with open('data.json', 'r') as f:
+
+
+data = json.load(f)
+
+
+return web.json_response(data)
+
+
+async def post_handler(request):
+
+
+data = await request.json()
+
+
+with open('data.json', 'w') as f:
+
+
+json.dump(data, f)
+
+
+return web.Response(text='Data updated successfully')
+
+
+async def put_handler(request):
+
+
+data = await request.json()
+
+
+with open('data.json', 'w') as f:
+
+
+json.dump(data, f)
+
+
+return web.Response(text='Data updated successfully')
+
+
+async def delete_handler(request):
+
+
+with open('data.json', 'w') as f:
+
+
+f.write('')
+
+
+return web.Response(text='Data deleted successfully')
+
+
+app.add_routes([
+
+
+web.get('/', get_handler),
+
+
+web.post('/', post_handler),
+
+
+web.put('/', put_handler),
+
+
+web.delete('/', delete_handler)
+
+
+])
+
+
+if __name__ == '__main__':
+
+
+web.run_app(app)
+
+
+
+
+
+
+    # async def post(self, request):
+    #     data = await request.json()
+    #
+    #     with open('data.json', 'r') as f:
+    #         self.data = json.load(f)
+    #
+    #     self.data.update(data)
+    #
+    #     with open('data.json', 'w') as f:
+    #         json.dump(self.data, f)
+    #
+    #     return web.json_response(text='Data added to JSON file')
